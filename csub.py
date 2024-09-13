@@ -66,7 +66,7 @@ parser.add_argument(
     "--image",
     type=str,
     required=False,
-    default="ic-registry.epfl.ch/mlo/mlo:v1",
+    default="ic-registry.epfl.ch/ivrl/pajouheshgar/pytorch2.01:cuda11.7v2",
     help="The URL of the docker image that will be used for the job",
 )
 parser.add_argument(
@@ -137,7 +137,7 @@ if __name__ == "__main__":
     with open(args.user, "r") as file:
         user_cfg = yaml.safe_load(file)
 
-    scratch_name = f"runai-mlo-{user_cfg['user']}-scratch"
+    scratch_name = f"runai-ivrl-{user_cfg['user']}-scratch"
 
     # get current cluster and make sure argument matches
     current_cluster = subprocess.run(
@@ -149,7 +149,7 @@ if __name__ == "__main__":
 
     if current_cluster == "rcp-caas-prod":
         runai_cli_version = "2.16.63"
-        scratch_name = "mlo-scratch"
+        scratch_name = "ivrl-scratch"
     elif current_cluster == "rcp-caas-test":
         runai_cli_version = "2.9.25"
     elif current_cluster == "ic-caas":
@@ -205,7 +205,7 @@ metadata:
   labels:
     PreviousJob: "true"
   name: {args.name}
-  namespace: runai-mlo-{user_cfg['user']}
+  namespace: runai-ivrl-{user_cfg['user']}
 spec:
   name:
     value: {args.name}
@@ -234,7 +234,7 @@ spec:
       WANDB_API_KEY:
         value: {user_cfg['wandb_api_key']}
       HF_HOME:
-        value: /mloscratch/hf_cache
+        value: /ivrlscratch/hf_cache
       HF_TOKEN:
         value: {user_cfg['hf_token']}
       EPFML_LDAP:
@@ -255,7 +255,7 @@ spec:
         value:
           claimName: {scratch_name}
           existingPvc: true
-          path: /mloscratch
+          path: /ivrlscratch
           readOnly: false
   ## these two lines are necessary on RCP, not on the new IC
   runAsGid:
