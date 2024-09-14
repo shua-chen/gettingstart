@@ -1,0 +1,247 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
+    cni.projectcalico.org/containerID: 76a8589f8e5189d768bc4b7708f9ec6b82f761cc3828564553d256dc91f9f703
+    cni.projectcalico.org/podIP: ""
+    cni.projectcalico.org/podIPs: ""
+    pod-group-name: pg-sandbox-0-0022f13f-1570-4262-8f2f-774b93fd4a55
+    received-resource-type: Regular
+    runai-allocated-gpu-memory: "0"
+    runai-allocated-gpus: "0"
+    runai-allocated-mig-gpus: "0"
+    runai-calculated-status: Error
+    runai-job-id: 0022f13f-1570-4262-8f2f-774b93fd4a55
+    user: shchen
+  creationTimestamp: "2024-09-14T08:42:00Z"
+  generateName: sandbox-
+  labels:
+    app: runaijob
+    controller-uid: 0022f13f-1570-4262-8f2f-774b93fd4a55
+    createdBy: RunaiJob
+    priorityClassName: build
+    project: ivrl-shchen
+    release: sandbox
+    run.ai/top-owner-uid: 429cb33d-16c8-4df8-a0f0-599fbba7bc71
+    runai/node-pool: g9
+    runai/pod-index: 0-0
+    workloadKind: InteractiveWorkload
+    workloadName: sandbox
+  name: sandbox-0-0
+  namespace: runai-ivrl-shchen
+  ownerReferences:
+  - apiVersion: run.ai/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: RunaiJob
+    name: sandbox
+    uid: 0022f13f-1570-4262-8f2f-774b93fd4a55
+  resourceVersion: "1054353442"
+  uid: 62981a7c-2620-4eb0-a797-7c31476a442a
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: nvidia.com/gpu.product
+            operator: In
+            values:
+            - Tesla-V100-SXM2-32GB
+  containers:
+  - args:
+    - /bin/zsh
+    - -c
+    - source ~/.zshrc && sleep 604800
+    env:
+    - name: EPFML_LDAP
+      value: shchen
+    - name: HF_HOME
+      value: /ivrlscratch/hf_cache
+    - name: HF_TOKEN
+      value: <your token here>
+    - name: HOME
+      value: /home/shchen
+    - name: NB_GID
+      value: "30233"
+    - name: NB_GROUP
+      value: IVRL-unit
+    - name: NB_UID
+      value: "295680"
+    - name: NB_USER
+      value: shchen
+    - name: SYMLINK_PATHS
+      value: /home/shchen/.ssh:/home/shchen/.bashrc:/home/shchen/.profile:/home/shchen/.zshrc:/home/shchen/.oh-my-zsh:/home/shchen/.zsh_history:/home/shchen/.gitconfig:/home/shchen/.vscode:/home/shchen/.vscode-server:/home/shchen/conda
+    - name: SYMLINK_TARGETS
+      value: /ivrlscratch/home/shchen/.ssh:/ivrlscratch/home/shchen/.bashrc:/ivrlscratch/home/shchen/.profile:/ivrlscratch/home/shchen/.zshrc:/ivrlscratch/home/shchen/.oh-my-zsh:/ivrlscratch/home/shchen/.zsh_history:/ivrlscratch/home/shchen/.gitconfig:/ivrlscratch/home/shchen/.vscode:/ivrlscratch/home/shchen/.vscode-server:/ivrlscratch/home/shchen/conda
+    - name: SYMLINK_TYPES
+      value: dir:file:file:file:dir:file:file:dir:dir:conda
+    - name: WANDB_API_KEY
+      value: <enter api key>
+    - name: WORKING_DIR
+      value: /ivrlscratch/home/shchen
+    - name: LDAP_UID
+      value: "295680"
+    - name: LDAP_GID
+      value: "30233"
+    - name: POD_INDEX
+      value: "0"
+    - name: jobUUID
+      value: 0022f13f-1570-4262-8f2f-774b93fd4a55
+    - name: JOB_UUID
+      value: 0022f13f-1570-4262-8f2f-774b93fd4a55
+    - name: jobName
+      value: sandbox
+    - name: JOB_NAME
+      value: sandbox
+    - name: RUNAI_NUM_OF_GPUS
+      value: "1"
+    - name: reporterGatewayURL
+      value: runai-prometheus-pushgateway.runai.svc.cluster.local:9091
+    - name: REPORTER_GATEWAY_URL
+      value: runai-prometheus-pushgateway.runai.svc.cluster.local:9091
+    - name: podUUID
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.uid
+    - name: POD_UUID
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.uid
+    - name: NODE_NAME
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: spec.nodeName
+    image: ic-registry.epfl.ch/ivrl/pajouheshgar/pytorch2.01:cuda11.7v2
+    imagePullPolicy: Always
+    name: sandbox
+    resources:
+      limits:
+        cpu: "1"
+        memory: 4G
+        nvidia.com/gpu: "1"
+      requests:
+        cpu: "1"
+        memory: 4G
+        nvidia.com/gpu: "1"
+    securityContext:
+      allowPrivilegeEscalation: true
+      capabilities: {}
+      runAsGroup: 30233
+      runAsUser: 295680
+      seccompProfile:
+        type: RuntimeDefault
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /ivrlscratch
+      name: pvc-volume-0
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-2qdz2
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: iccluster178
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Never
+  schedulerName: runai-scheduler
+  securityContext:
+    fsGroup: 30233
+    supplementalGroups:
+    - 70147
+    - 30074
+    - 62510
+    - 30092
+    - 25000
+    - 61196
+    - 69999
+    - 75542
+    - 75547
+    - 76314
+    - 78611
+    - 80367
+    - 30233
+    - 82566
+    - 82952
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: pvc-volume-0
+    persistentVolumeClaim:
+      claimName: runai-ivrl-shchen-scratch
+  - name: kube-api-access-2qdz2
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2024-09-14T08:42:02Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2024-09-14T08:42:02Z"
+    reason: PodFailed
+    status: "False"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2024-09-14T08:42:02Z"
+    reason: PodFailed
+    status: "False"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2024-09-14T08:42:02Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: containerd://7542e9f974f2265ce506f2f760563063e7ce8a0f03c57bc2abc85dbed8662721
+    image: ic-registry.epfl.ch/ivrl/pajouheshgar/pytorch2.01:cuda11.7v2
+    imageID: ic-registry.epfl.ch/ivrl/pajouheshgar/pytorch2.01@sha256:781c737d1399dbd42c4842b38a470d1cc08b7a163e3bed857d66e7ebe6181c37
+    lastState: {}
+    name: sandbox
+    ready: false
+    restartCount: 0
+    started: false
+    state:
+      terminated:
+        containerID: containerd://7542e9f974f2265ce506f2f760563063e7ce8a0f03c57bc2abc85dbed8662721
+        exitCode: 127
+        finishedAt: "2024-09-14T08:42:04Z"
+        reason: Error
+        startedAt: "2024-09-14T08:42:04Z"
+  hostIP: 10.90.47.30
+  phase: Failed
+  podIP: 10.42.176.234
+  podIPs:
+  - ip: 10.42.176.234
+  qosClass: Guaranteed
+  startTime: "2024-09-14T08:42:02Z"
